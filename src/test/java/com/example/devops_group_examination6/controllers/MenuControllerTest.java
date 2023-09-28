@@ -2,16 +2,10 @@ package com.example.devops_group_examination6.controllers;
 
 import com.example.devops_group_examination6.Repositories.MenuRepo;
 import com.example.devops_group_examination6.service.MenuManipulator;
-import com.example.devops_group_examination6.service.MenuManipulatorImplements;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -19,35 +13,31 @@ import java.time.LocalDate;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest(MenuController.class)
 class MenuControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
     @MockBean
     private MenuRepo menuRepo;
 
-    private final MockMvc mockMvc;
-
-    private MenuController menuController;
     @MockBean
     private MenuManipulator menuManipulator;
-
-    @Autowired
-    public MenuControllerTest(MenuRepo menuRepo, MockMvc mockMvc, MenuManipulator menuManipulator, MenuController menuController) {
-        this.menuRepo = menuRepo;
-        this.mockMvc = mockMvc;
-        this.menuManipulator = menuManipulator;
-        this.menuController = menuController;
-    }
 
     @Test
     public void getTodaysMenuTest() throws Exception {
         String todaysDate = LocalDate.now().getDayOfWeek().toString();
-        String todaysMenu = menuManipulator.checkTodaysMenu(todaysDate);
-        mockMvc.perform(get("localhost:8080/menu/today")).andExpect(status().isOk()).andExpect(content().string(todaysMenu));
+        String expectedMenu = menuManipulator.checkTodaysMenu(todaysDate);  // Sample data for our mock
+        when(menuManipulator.checkTodaysMenu(todaysDate)).thenReturn(expectedMenu);
+
+        mockMvc.perform(get("/menu/today"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Sample Menu for Today"));
     }
-
-
+}
 //
 //    @Test
 //    void listBeersByStyleAndName() throws Exception {
@@ -58,4 +48,3 @@ class MenuControllerTest {
 //                        .queryParam("pageSize", "800"))
 //                .andExpect(status().isOk())
 //                .andExpect(jsonPath("$.content.size()", is(310)));
-}
