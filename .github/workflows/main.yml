@@ -36,3 +36,12 @@ jobs:
 
       - name: Build new image
         run: docker build -t devops-menu-project .
+
+      - name: Login to GitHub Container Registry
+        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u Jonathanh162 --password-stdin
+
+      - name: Tag and Push Docker Image
+        run: |
+         docker tag devops-menu-project ghcr.io/Jonathanh162/devops-menu-project:latest 
+         docker push ghcr.io/Jonathanh162/devops-menu-project:latest
+
