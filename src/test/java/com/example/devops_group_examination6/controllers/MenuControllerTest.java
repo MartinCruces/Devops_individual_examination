@@ -9,13 +9,17 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.mockito.Mockito.when;
 
-@WebMvcTest(MenuController.class)
+@WebMvcTest
 class MenuControllerTest {
 
     @Autowired
@@ -27,24 +31,27 @@ class MenuControllerTest {
     @MockBean
     private MenuManipulator menuManipulator;
 
+
+
     @Test
     public void getTodaysMenuTest() throws Exception {
         String todaysDate = LocalDate.now().getDayOfWeek().toString();
-        String expectedMenu = menuManipulator.checkTodaysMenu(todaysDate);  // Sample data for our mock
+        String expectedMenu = "Todays Menu";
         when(menuManipulator.checkTodaysMenu(todaysDate)).thenReturn(expectedMenu);
 
         mockMvc.perform(get("/menu/today"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Sample Menu for Today"));
+                .andExpect(content().string(expectedMenu));
+    }
+    @Test
+    public void getWeekMenuTest() throws Exception {
+        Map<Integer, String> expectedMenu = new HashMap<>();
+        expectedMenu.put(0,"Monday");
+        expectedMenu.put(1,"Tuesday");
+        when(menuRepo.getMenuMap()).thenReturn(expectedMenu);
+        String expectedMenuString = expectedMenu.toString();
+        mockMvc.perform(get("/menu"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedMenuString));
     }
 }
-//
-//    @Test
-//    void listBeersByStyleAndName() throws Exception {
-//        mockMvc.perform(get(BeerController.BEER_PATH)
-//                        .with(BeerControllerTest.jwtRequestPostProcessor)
-//                        .queryParam("beerName", "IPA")
-//                        .queryParam("beerStyle", BeerStyle.IPA.name())
-//                        .queryParam("pageSize", "800"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.content.size()", is(310)));

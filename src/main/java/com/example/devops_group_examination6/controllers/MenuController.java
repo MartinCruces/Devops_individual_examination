@@ -24,7 +24,7 @@ public class MenuController {
 
     @GetMapping
     public String getWeeklyMenu() {
-        return menuRepo.menuMap.toString();
+        return menuRepo.getMenuMap().toString();
     }
 
     @GetMapping("/today")
