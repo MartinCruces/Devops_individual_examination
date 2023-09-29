@@ -9,11 +9,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    services:
-      docker:
-        image: docker/moby-engine
-        options: --privileged --entrypoint ""
-
     steps:
       - uses: actions/checkout@v3
 
