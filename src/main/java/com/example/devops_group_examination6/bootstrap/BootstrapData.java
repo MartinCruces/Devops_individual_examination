@@ -26,7 +26,7 @@ public class BootstrapData implements CommandLineRunner {
             try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
 
                 bufferedReader.lines()
-                        .forEachOrdered(line -> menuRepo.menuMap.put(menuRepo.menuMap.size(), line));
+                        .forEachOrdered(line -> menuRepo.getMenuMap().put(menuRepo.getMenuMap().size(), line));
 
             }
         } catch (IOException e) {

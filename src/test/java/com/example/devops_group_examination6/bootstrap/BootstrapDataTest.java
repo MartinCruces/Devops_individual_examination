@@ -2,42 +2,32 @@ package com.example.devops_group_examination6.bootstrap;
 
 import com.example.devops_group_examination6.Repositories.MenuRepo;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import java.util.Map;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class BootstrapDataTest {
 
-    MenuRepo menuRepo;
+    @Mock
+    private MenuRepo menuRepo;
 
-    @Autowired
-    public BootstrapDataTest(MenuRepo menuRepo) {
+    @Mock
+    private Map<Integer, String> mockMenuMap;
 
-        this.menuRepo = menuRepo;
-    }
-    @Test
-    public void repoHasDataTest() {
-
-        assertThat(menuRepo.menuMap).isNotEmpty();
-    }
+    @InjectMocks
+    private BootstrapData bootstrapData;
 
     @Test
-    public void repoFirstIterationIsMondayTest() {
-        String monday = menuRepo.menuMap.get(0).toUpperCase();
-        boolean containsMonday = monday.contains("MONDAY");
-
-        assertTrue(containsMonday);
+    void testMenuReader() {
+        when(menuRepo.getMenuMap()).thenReturn(mockMenuMap);
+        bootstrapData.menuReader();
+        verify(mockMenuMap, times(7)).put(anyInt(), anyString());
     }
-
-    @Test
-    public void repoDataIsLongEnoughTest() {
-
-        assertEquals(7, menuRepo.menuMap.size());
-    }
-
-
 }
+
