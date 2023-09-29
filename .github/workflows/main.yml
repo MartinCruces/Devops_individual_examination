@@ -42,6 +42,6 @@ jobs:
 
       - name: Tag and Push Docker Image
         run: |
-         docker tag devops-menu-project ghcr.io/Jonathanh162/devops-menu-project:latest 
-         docker push ghcr.io/Jonathanh162/devops-menu-project:latest
+         docker tag devops-menu-project ghcr.io/jonathanh162/devops-menu-project:latest 
+         docker push ghcr.io/jonathanh162/devops-menu-project:latest
 
