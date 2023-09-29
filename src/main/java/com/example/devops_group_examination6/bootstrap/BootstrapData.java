@@ -6,10 +6,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+
 @Component
 public class BootstrapData implements CommandLineRunner {
 
-    String filePath = "src/main/resources/documents/menu.txt";
+    String filePath = "/documents/menu.txt";
     MenuRepo menuRepo;
 
     @Autowired
@@ -18,18 +19,21 @@ public class BootstrapData implements CommandLineRunner {
     }
 
 
+
     public void menuReader() {
+        try (InputStream inputStream = getClass().getResourceAsStream(filePath)) {
+            assert inputStream != null;
+            try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
 
-        try (FileReader fileReader = new FileReader(filePath);
-             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+                bufferedReader.lines()
+                        .forEachOrdered(line -> menuRepo.menuMap.put(menuRepo.menuMap.size(), line));
 
-            bufferedReader.lines()
-                    .forEachOrdered(line -> menuRepo.menuMap.put(menuRepo.menuMap.size(), line));
-
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
 
 
     @Override
@@ -37,3 +41,4 @@ public class BootstrapData implements CommandLineRunner {
         menuReader();
     }
 }
+
