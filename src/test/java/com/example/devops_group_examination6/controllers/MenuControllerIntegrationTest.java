@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
-
 import com.example.devops_group_examination6.Repositories.MenuRepo;
 import com.example.devops_group_examination6.service.MenuManipulator;
 
@@ -23,10 +22,10 @@ public class MenuControllerIntegrationTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private MenuRepo menuRepo; // The actual bean
+    private MenuRepo menuRepo;
 
     @Autowired
-    private MenuManipulator menuManipulator; // The actual bean
+    private MenuManipulator menuManipulator;
 
     @Test
     public void testGetWeeklyMenu() throws Exception {

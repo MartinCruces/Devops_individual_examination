@@ -8,10 +8,10 @@ import java.util.Map;
 @Component
 public class MenuRepo {
 
-    public Map<Integer, String> getMenuMap() {
+    public  Map<Integer, String> getMenuMap() {
         return menuMap;
     }
 
-    public final Map<Integer, String> menuMap = new HashMap<>();
+    public Map<Integer, String> menuMap = new HashMap<>();
 
 }
