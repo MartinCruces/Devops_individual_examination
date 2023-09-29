@@ -9,6 +9,11 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    services:
+      docker:
+        image: docker/moby-engine
+        options: --privileged --entrypoint ""
+
     steps:
       - uses: actions/checkout@v3
 
@@ -28,6 +33,11 @@ jobs:
 
       - name: Test with Gradle   
         run: ./gradlew test 
+
+      - name: Setup Docker
+        run: |
+          sudo systemctl start docker
+          docker --version
 
       - name: Build new image
         run: docker build -t devops-menu-project .
