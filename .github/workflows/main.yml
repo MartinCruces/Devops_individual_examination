@@ -28,3 +28,6 @@ jobs:
 
       - name: Test with Gradle   
         run: ./gradlew test 
+
+      - name: Build new image
+        run: docker build -t devops-menu-project .
