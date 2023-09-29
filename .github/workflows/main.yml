@@ -45,3 +45,6 @@ jobs:
          docker tag devops-menu-project ghcr.io/jonathanh162/devops-menu-project:latest 
          docker push ghcr.io/jonathanh162/devops-menu-project:latest
 
+      - name: Fake Deploy to Test Environment
+        run: 'echo "Deploying image: ghcr.io/jonathanh162/devops-menu-project:latest to test environment"'
+
