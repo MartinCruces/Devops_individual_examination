@@ -1,20 +1,18 @@
-name: Build and Test Java Spring Boot Application
+name: Build, Test, and Deploy Java Spring Boot Application
 
 on:
-  pull_request:
+ pull_request:
     branches: [ "master" ]
 
 jobs:
-  build:
-
+  setup_and_build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
 
       - name: Set execute permissions on gradlew
         run: chmod +x ./gradlew
-      
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -22,12 +20,17 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
-  # Build and test with Gradle
       - name: Build with Gradle
         run: ./gradlew build
 
       - name: Test with Gradle   
         run: ./gradlew test 
+
+  docker_build_and_push:
+    needs: setup_and_build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
       - name: Setup Docker
         run: |
@@ -42,9 +45,11 @@ jobs:
 
       - name: Tag and Push Docker Image
         run: |
-         docker tag devops-menu-project ghcr.io/jonathanh162/devops-menu-project:latest 
-         docker push ghcr.io/jonathanh162/devops-menu-project:latest
+          docker tag devops-menu-project ghcr.io/jonathanh162/devops-menu-project:latest 
+          docker push ghcr.io/jonathanh162/devops-menu-project:latest
 
-      - name: Fake Deploy to Test Environment
-        run: 'echo "Deploying image: ghcr.io/jonathanh162/devops-menu-project:latest to test environment"'
-
+  fake_deploy:
+    needs: docker_build_and_push
+    runs-on: ubuntu-latest
+    steps:
+      - run: 'echo "Deploying image: ghcr.io/jonathanh162/devops-menu-project:latest to test environment"'
