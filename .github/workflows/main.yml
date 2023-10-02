@@ -1,8 +1,8 @@
 name: Build and Test Java Spring Boot Application
 
 on:
-  push:
-    branches: [ "master", "Development_Branch" ]
+  pull_request:
+    branches: [ "master" ]
 
 jobs:
   build:
