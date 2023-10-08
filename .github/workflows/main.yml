@@ -2,7 +2,7 @@ name: Build, Test, and Deploy Java Spring Boot Application
 
 on:
  pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
   setup_and_build:
