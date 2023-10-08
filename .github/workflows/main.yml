@@ -58,8 +58,8 @@ jobs:
 
       - name: Tag and Push Docker Image
         run: |
-          docker tag devops-menu-project ghcr.io/jonathanh162/devops-menu-project:latest 
-          docker push ghcr.io/jonathanh162/devops-menu-project:latest
+          docker tag devops-menu-project ghcr.io/martincruces/devops-menu-project:latest 
+          docker push ghcr.io/martincruces/devops-menu-project:latest
 
   fake_deploy:
     needs: docker_build_and_push
